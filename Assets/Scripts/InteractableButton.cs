@@ -28,9 +28,6 @@ public class InteractableButton : MonoBehaviour, IPointerEnterHandler, IPointerE
     private void Start() =>
         _image = GetComponent<Image>();
 
-    private void OnMouseDown() =>
-        _onClick?.Invoke();
-
     public void OnPointerEnter(PointerEventData eventData)
     {
         if (_coroutine != null)
@@ -55,8 +52,11 @@ public class InteractableButton : MonoBehaviour, IPointerEnterHandler, IPointerE
         _coroutine = StartCoroutine(ChangeColor(_image.color, _onPointerDownColor));
     }
 
-    public void OnPointerClick(PointerEventData eventData) =>
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        _onClick?.Invoke();
         OnPointerEnter(eventData);
+    }
 
     private IEnumerator ChangeColor(Color startColor, Color endColor)
     {
