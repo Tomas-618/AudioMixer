@@ -17,7 +17,15 @@ public class InteractableButton : MonoBehaviour, IPointerEnterHandler, IPointerE
     private Coroutine _coroutine;
     private Image _image;
 
-    private void Reset()
+    public event UnityAction OnClick
+    {
+        add => _onClick.AddListener(value);
+        remove => _onClick.RemoveListener(value);
+    }
+
+    public Color OnPointerExitColor => _onPointerExitColor;
+
+    protected virtual void Reset()
     {
         _deltaColorValue = 0.05f;
         _onPointerEnterColor = Color.white;
@@ -41,7 +49,7 @@ public class InteractableButton : MonoBehaviour, IPointerEnterHandler, IPointerE
         if (_coroutine != null)
             StopCoroutine(_coroutine);
 
-        _coroutine = StartCoroutine(ChangeColor(_image.color, _onPointerExitColor));
+        _coroutine = StartCoroutine(ChangeColor(_image.color, GetNormalColor()));
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -54,9 +62,12 @@ public class InteractableButton : MonoBehaviour, IPointerEnterHandler, IPointerE
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        _onClick?.Invoke();
+        _onClick.Invoke();
         OnPointerEnter(eventData);
     }
+
+    protected virtual Color GetNormalColor() =>
+        _onPointerExitColor;
 
     private IEnumerator ChangeColor(Color startColor, Color endColor)
     {
