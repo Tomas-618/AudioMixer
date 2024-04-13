@@ -314,9 +314,10 @@ MonoBehaviour:
   _onClick:
     m_PersistentCalls:
       m_Calls: []
-  _onPointerEnterColor: {r: 0.7924528, g: 0.7924528, b: 0.7924528, a: 1}
+  _onPointerEnterColor: {r: 0.4433962, g: 0.4433962, b: 0.4433962, a: 1}
   _onPointerExitColor: {r: 1, g: 1, b: 1, a: 1}
-  _onPointerDownColor: {r: 0.6226415, g: 0.6226415, b: 0.6226415, a: 1}
+  _onSelectedColor: {r: 0.7169812, g: 0.7169812, b: 0.7169812, a: 1}
+  _onPointerDownColor: {r: 0.26415092, g: 0.26415092, b: 0.26415092, a: 1}
 --- !u!114 &345259106
 MonoBehaviour:
   m_ObjectHideFlags: 0

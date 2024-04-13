@@ -5,23 +5,28 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Image))]
-public class InteractableButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerClickHandler
+public class InteractableToogle : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerClickHandler
 {
     [SerializeField, Range(0, 1)] private float _deltaColorValue;
 
     [SerializeField] private UnityEvent _onClick;
     [SerializeField] private Color _onPointerEnterColor;
     [SerializeField] private Color _onPointerExitColor;
+    [SerializeField] private Color _onSelectedColor;
     [SerializeField] private Color _onPointerDownColor;
 
     private Coroutine _coroutine;
     private Image _image;
+    private bool _isPressed;
+
+    public Color NormalColor => _isPressed ? _onSelectedColor : _onPointerExitColor;
 
     private void Reset()
     {
         _deltaColorValue = 0.05f;
         _onPointerEnterColor = Color.white;
         _onPointerExitColor = Color.white;
+        _onSelectedColor = Color.white;
         _onPointerDownColor = Color.white;
     }
 
@@ -41,7 +46,7 @@ public class InteractableButton : MonoBehaviour, IPointerEnterHandler, IPointerE
         if (_coroutine != null)
             StopCoroutine(_coroutine);
 
-        _coroutine = StartCoroutine(ChangeColor(_image.color, _onPointerExitColor));
+        _coroutine = StartCoroutine(ChangeColor(_image.color, NormalColor));
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -55,6 +60,8 @@ public class InteractableButton : MonoBehaviour, IPointerEnterHandler, IPointerE
     public void OnPointerClick(PointerEventData eventData)
     {
         _onClick?.Invoke();
+        _isPressed = !_isPressed;
+
         OnPointerEnter(eventData);
     }
 
