@@ -1,7 +1,10 @@
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.EventSystems;
 
-public class InteractableToggle : InteractableButton
+public class InteractableToggle : Interactable
 {
+    [SerializeField] private UnityEvent<bool> _onChangeState;
     [SerializeField] private Color _onSelectedColor;
 
     private bool _isPressed;
@@ -14,11 +17,12 @@ public class InteractableToggle : InteractableButton
         base.Reset();
     }
 
-    private void OnEnable() =>
-        OnClick += ChangeState;
-
-    private void OnDisable() =>
-        OnClick -= ChangeState;
+    public override void OnPointerClick(PointerEventData eventData)
+    {
+        ChangeState();
+        _onChangeState.Invoke(_isPressed);
+        base.OnPointerClick(eventData);
+    }
 
     protected override Color GetNormalColor() =>
         NormalColor;

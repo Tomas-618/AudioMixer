@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -9,19 +8,12 @@ public abstract class Interactable : MonoBehaviour, IPointerEnterHandler, IPoint
 {
     [SerializeField, Range(0, 1)] private float _deltaColorValue;
 
-    [SerializeField] private UnityEvent _onClick;
     [SerializeField] private Color _onPointerEnterColor;
     [SerializeField] private Color _onPointerExitColor;
     [SerializeField] private Color _onPointerDownColor;
 
     private Coroutine _coroutine;
     private Image _image;
-
-    public event UnityAction OnClick
-    {
-        add => _onClick.AddListener(value);
-        remove => _onClick.RemoveListener(value);
-    }
 
     public Color OnPointerExitColor => _onPointerExitColor;
 
@@ -60,11 +52,8 @@ public abstract class Interactable : MonoBehaviour, IPointerEnterHandler, IPoint
         _coroutine = StartCoroutine(ChangeColor(_image.color, _onPointerDownColor));
     }
 
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        _onClick.Invoke();
+    public virtual void OnPointerClick(PointerEventData eventData) =>
         OnPointerEnter(eventData);
-    }
 
     protected virtual Color GetNormalColor() =>
         _onPointerExitColor;
